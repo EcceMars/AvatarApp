@@ -1,13 +1,34 @@
 # AvatarApp
-Simple PNGTuber app for Godot 4.7.
 
-Attempt to do a universal (MacOS and Windows) application for streaming or any similar use for Godot 4.7, using an external keyboard listener in Python (I couldn't find an in-engine solution, so I had to use something else).
+A lightweight PNGTuber avatar app for Godot 4.7 — cross-platform (Windows & macOS), reactive to your microphone, mouse, and keyboard.
 
-A system-specific consideration is the mouse passthrough capacities of the application. Windows has an awkward way of dealing with this—being a bit hard to pass a mouse click at the OS-level through a visible window, however, extending this with the correct behaviour in C# is advised elsewhere.
+## Features
+- Idle, talking, writing, and pointing states driven by real input
+- Directional look/point animation via an `AnimationTree` state machine
+- Transparent, borderless, always-on-top overlay window
+- Swappable skins (casual / strategy included)
 
-Then, a Godot related problem is solved with the keyboard listener Python code—which works as a 'keylogger', but I couldn't find a better solution yet. Becuase of it, and to have all functionalities, it is recommended that anyone using this application to have Python installed on their machine.
+## How it works
+- **Microphone** — reads live input peak volume to detect talking
+- **Mouse** — tracks speed/displacement to detect pointing, and position for directional look
+- **Keyboard** — a small external Python listener (see below) detects typing activity
 
-This project is open-sourced (while the provided images I use personally—please, keep this in mind), you can use as you seem fit. Again, just be careful with the usage of the sprite art.
+## Requirements
+- Godot 4.7
+- Python 3 (for the keyboard listener) — install `pynput`: `pip install pynput`
 
+## Why an external keyboard listener?
+Godot has no built-in way to read global keystrokes when the window isn't focused, so a small Python process listens system-wide and forwards key activity to the app over a local TCP socket. I'd have preferred to keep everything inside Godot, but this was the only reliable cross-platform option I found — happy to hear of alternatives.
+
+## Platform notes
+Windows and macOS handle click-through (mouse passthrough) differently at the OS level; macOS needed a distinct window-offset workaround (see `MAIN.gd`). Linux is not currently targeted.
+
+## License
+The code is MIT-licensed (see `LICENSE`). **The sprite art is not** — see below.
+
+## Assets & personal likeness
+The character art in `assets/` is a personal streaming persona that I designed and use to represent myself. You're welcome to use it to learn from the *code*, but please don't reuse, redistribute, or present the art itself as your own avatar/persona. See `ASSETS_LICENSE.md` for the exact terms.
+
+---
 Cheers,
 Mars!
